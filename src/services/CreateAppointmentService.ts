@@ -18,12 +18,6 @@ interface Request {
 // Single Responsability Principle
 
 class CreateAppointmentService {
-    private appointmentsRepository: AppointmentsRepository;
-
-    constructor(appointmentsRepository: AppointmentsRepository) {
-        this.appointmentsRepository = appointmentsRepository;
-    }
-
     public async execute({ date, provider }: Request): Promise<Appointment> {
         const appointmentsRepository = getCustomRepository(
             AppointmentsRepository,
@@ -31,7 +25,7 @@ class CreateAppointmentService {
 
         const appointmentDate = startOfHour(date);
 
-        const findAppointmentInSameDate = appointmentsRepository.findByDate(
+        const findAppointmentInSameDate = await appointmentsRepository.findByDate(
             appointmentDate,
         );
 
