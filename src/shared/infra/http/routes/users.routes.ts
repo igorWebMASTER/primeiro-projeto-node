@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import multer from 'multer';
-import uploadConfig from '../config/upload';
+import uploadConfig from '../../../../config/upload';
 
 import CreateUserService from '../services/CreateUserService';
 import UpdateUserAvatarService from '../services/UpadateUserAvatarService';
@@ -9,8 +9,6 @@ import ensureAuthenticated from '../middlewares/ensureAuthiticated';
 
 const usersRouter = Router();
 const upload = multer(uploadConfig);
-
-usersRouter.use(ensureAuthenticated);
 
 usersRouter.post('/', async (request, response) => {
     const { name, email, password } = request.body;
@@ -23,9 +21,16 @@ usersRouter.post('/', async (request, response) => {
         password,
     });
 
-    delete user.password;
+    // Com a atualização do TypeScript, isso se faz necessário
+    const userWithoutPassword = {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        created_at: user.created_at,
+        updated_at: user.updated_at,
+    };
 
-    return response.json(user);
+    return response.json(userWithoutPassword);
 });
 
 usersRouter.patch(
@@ -40,10 +45,15 @@ usersRouter.patch(
             avatarFilename: request.file.filename,
         });
 
-        delete user.password;
+        const userWithoutPassword = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            created_at: user.created_at,
+            updated_at: user.updated_at,
+        };
 
-        return response.json(user);
+        return response.json(userWithoutPassword);
     },
 );
-
 export default usersRouter;
