@@ -5,7 +5,7 @@ import AppError from '@shared/errors/AppError';
 
 import Appointment from '../infra/typeorm/entities/Appointments';
 
-import AppointmentsRepository from '../repositories/AppointmentsRepository';
+import AppointmentsRepository from '../infra/typeorm/repositories/AppointmentsRepository';
 
 // DRY - Dont Repeat Yourself
 // x recebimento das informações
