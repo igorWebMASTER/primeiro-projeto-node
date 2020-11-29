@@ -19,6 +19,7 @@ interface Request {
 
 // Dependency Inversion Principle (SOLID)
 // Single Responsability Principle
+// Inversion Dependency
 
 class CreateAppointmentService {
     public async execute({ date, provider_id }: Request): Promise<Appointment> {
@@ -36,12 +37,10 @@ class CreateAppointmentService {
             throw new AppError('This appointment is already booked');
         }
 
-        const appointment = appointmentsRepository.create({
+        const appointment = await appointmentsRepository.create({
             provider_id,
             date: appointmentDate,
         });
-
-        await appointmentsRepository.save(appointment);
 
         return appointment;
     }
