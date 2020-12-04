@@ -5,7 +5,7 @@ import AppError from '@shared/errors/AppError';
 // SOLID
 
 import Appointment from '../infra/typeorm/entities/Appointments';
-import { IAppointmentsRepository } from '../repositories/IAppointmentsRepository';
+import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 
 interface IRequest {
     provider_id: string;
