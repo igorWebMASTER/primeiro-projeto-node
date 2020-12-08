@@ -10,10 +10,10 @@ describe('CreateAppointment', async () => {
 
         const appointment = await createAppointment.execute({
             date: new Date(),
-            provider_id: '121313123',
+            provider_id: '123123',
         });
 
         expect(appointment).toHaveProperty('id');
-        expect(appointment.provider_id).toBe('121313123');
+        expect(appointment.provider_id).toBe('123123');
     });
 });
