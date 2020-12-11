@@ -10,11 +10,13 @@ class UsersRepository implements IUsersRepository {
 
     public async findById(id: string): Promise<User | undefined> {
         const findUser = this.users.find(user => user.id === id);
+
         return findUser;
     }
 
     public async findByEmail(email: string): Promise<User | undefined> {
         const findUser = this.users.find(user => user.email === email);
+
         return findUser;
     }
 
