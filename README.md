@@ -19,7 +19,7 @@ Aplicação Node com Typescript
 **RN**
 
 -   O link enviado por email para resetar senha, deve expirar em 2h;
--   O usuario precisa confirmar a nova senha ao resetar sua senha;
+-   O usuário precisa confirmar a nova senha ao resetar sua senha;
 
 # Atualização do perfil
 
@@ -37,6 +37,22 @@ Aplicação Node com Typescript
 
 # Painel do prestador
 
+**RF**
+
+-   O usuário deve poder realizar os seus agendamentos de um dia específico;
+-   O prestador deve receber uma notificação sempre que houver um novo agendamento;
+-   O prestador deve poder visualizar as notificações não lidas;
+
+**RNF**
+
+-   Os agendamentos do prestador no dia do prestador deve ser armazenados em cache;
+-   As notificações do prestador devem ser armazenadas no MongoDB;
+-   As notificações do prestador devem ser enviadas em tempo-real utilizando Socket.io;
+
+**RN**
+
+-   A notificação deve ter um status de lida ou não-lida para que o prestador possa controlar;
+
 # Agendamento de serviços
 
 **RF**
@@ -48,9 +64,12 @@ Aplicação Node com Typescript
 
 **RNF**
 
+-   A listagem de prestadores deve ser armazenada em cache;
+
 **RN**
 
 -   Cada agendamento deve durar 1h exatamente;
--   Os agendamento devem estar disponíveis entre as 8h e 18h (Primeiro, as 8h, último as 17h);
+-   Os agendamento devem estar disponíveis entre as 8h e 18h (Primeiro, às 8h, último `as 17h);
 -   Os usuários não pode agendar um horário já ocupado;
--   O usuário não pode agendar em um
+-   O usuário não pode agendar em um horário que já passou;
+-   O usuário não pode agendar serviços consigo mesmo.
