@@ -3,7 +3,7 @@ import AppError from '@shared/errors/AppError';
 
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IUsersRepository from '../repositories/IUsersRepository';
-
+import IUserTokensRepository from '../repositories/IUserTokenRepository';
 // import User from '../infra/typeorm/entities/User';
 
 interface IRequest {
@@ -18,14 +18,25 @@ class SendForgotPasswordEmailService {
 
         @inject('MailProvider')
         private mailProvider: IMailProvider,
+
+        @inject('UserTokenRepository')
+        private userTokensRepository: IUserTokensRepository,
     ) {}
 
     public async execute({ email }: IRequest): Promise<void> {
-        const checkUserExists = await this.usersRepository.findByEmail(email);
+        // const checkUserExists = await this.usersRepository.findByEmail(email);
 
-        if (!checkUserExists) {
-            throw new AppError('User does not exists');
+        // if (!checkUserExists) {
+        //     throw new AppError('User does not exists');
+        // }
+
+        const user = await this.usersRepository.findByEmail(email);
+
+        if (!user) {
+            throw new AppError('User does not exists.');
         }
+
+        await this.userTokensRepository.generate(user.id);
 
         this.mailProvider.sendMail(
             email,
