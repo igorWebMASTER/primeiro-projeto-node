@@ -19,52 +19,60 @@ describe('UpdateUserAvatar', () => {
         );
     });
 
-    it('should be able to create a new user', async () => {
+    it('should be able to update the profile', async () => {
         const user = await fakeUsersRepository.create({
             name: 'Jhon Doe',
             email: 'jhon@oulook.com',
             password: '123456',
         });
 
-        await updateUserAvatar.execute({
+        const updatedUser = await updateProfile.execute({
             user_id: user.id,
-            avatarFilename: 'avatar.jpg',
+            name: 'Jhon Tre',
+            email: 'jhontre@outlook.com',
         });
 
-        expect(user.avatar).toBe('avatar.jpg');
+        expect(updatedUser.name).toBe('Jhon Tre');
+        expect(updatedUser.email).toBe('jhontre@outlook.com');
     });
 
-    it('should be able to create a new user', async () => {
+    it('should not be able to change to another user email', async () => {
+        await fakeUsersRepository.create({
+            name: 'Jhon Doe',
+            email: 'jhon@oulook.com',
+            password: '123456',
+        });
+
+        const user = await fakeUsersRepository.create({
+            name: 'Test',
+            email: 'test@outlook.com',
+            password: '123456',
+        });
+
         await expect(
-            updateUserAvatar.execute({
-                user_id: 'non-existing-user',
-                avatarFilename: 'avatar.jpg',
+            updateProfile.execute({
+                user_id: user.id,
+                name: 'Jhon Tre',
+                email: 'jhon@outlook.com',
             }),
         ).rejects.toBeInstanceOf(AppError);
     });
 
-    it('should delete old avatar when updating new one', async () => {
-        const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
-
+    it('should be able to update the password', async () => {
         const user = await fakeUsersRepository.create({
             name: 'Jhon Doe',
             email: 'jhon@oulook.com',
             password: '123456',
         });
 
-        await updateUserAvatar.execute({
+        const updatedUser = await updateProfile.execute({
             user_id: user.id,
-            avatarFilename: 'avatar.jpg',
+            name: 'Jhon Tre',
+            email: 'jhontre@outlook.com',
+            old_password: '123123',
+            password: '123123',
         });
 
-        // spy
-
-        await updateUserAvatar.execute({
-            user_id: user.id,
-            avatarFilename: 'avatar2.jpg',
-        });
-
-        expect(deleteFile).toHaveBeenCalledWith('avatar.jpg');
-        expect(user.avatar).toBe('avatar2.jpg');
+        expect(updatedUser.password).toBe('123123');
     });
 });
