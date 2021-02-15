@@ -38,22 +38,22 @@ describe('UpdateUserAvatar', () => {
 
     it('should not be able to change to another user email', async () => {
         await fakeUsersRepository.create({
-            name: 'Jhon Doe',
-            email: 'jhon@oulook.com',
+            name: 'John Doe',
+            email: 'johndoe@example.com',
             password: '123456',
         });
 
         const user = await fakeUsersRepository.create({
             name: 'Test',
-            email: 'test@outlook.com',
+            email: 'test@example.com',
             password: '123456',
         });
 
         await expect(
             updateProfile.execute({
                 user_id: user.id,
-                name: 'Jhon Tre',
-                email: 'jhon@outlook.com',
+                name: 'John Doe',
+                email: 'johndoe@example.com',
             }),
         ).rejects.toBeInstanceOf(AppError);
     });
@@ -69,10 +69,45 @@ describe('UpdateUserAvatar', () => {
             user_id: user.id,
             name: 'Jhon Tre',
             email: 'jhontre@outlook.com',
-            old_password: '123123',
+            old_password: '123456',
             password: '123123',
         });
 
         expect(updatedUser.password).toBe('123123');
+    });
+
+    it('should not be able to update the password without old password', async () => {
+        const user = await fakeUsersRepository.create({
+            name: 'Jhon Doe',
+            email: 'jhon@oulook.com',
+            password: '123456',
+        });
+
+        await expect(
+            updateProfile.execute({
+                user_id: user.id,
+                name: 'Jhon Tre',
+                email: 'jhontre@outlook.com',
+                password: '123123',
+            }),
+        ).rejects.toBeInstanceOf(AppError);
+    });
+
+    it('should not be able to update the password with wrong password old password', async () => {
+        const user = await fakeUsersRepository.create({
+            name: 'Jhon Doe',
+            email: 'jhon@oulook.com',
+            password: '123456',
+        });
+
+        await expect(
+            updateProfile.execute({
+                user_id: user.id,
+                name: 'Jhon Tre',
+                email: 'jhontre@outlook.com',
+                old_password: 'wrong-old-passswod',
+                password: '123123',
+            }),
+        ).rejects.toBeInstanceOf(AppError);
     });
 });
