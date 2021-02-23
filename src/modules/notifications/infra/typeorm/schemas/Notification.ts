@@ -1,17 +1,21 @@
 import {
     ObjectID,
+    ObjectIdColumn,
     Entity,
-    CreateDateColumn,
     Column,
+    CreateDateColumn,
     UpdateDateColumn,
 } from 'typeorm';
 
-@Entity('Notifications')
+@Entity('notifications')
 class Notification {
+    @ObjectIdColumn()
     id: ObjectID;
 
+    @Column()
     content: string;
 
+    @Column('uuid')
     recipient_id: string;
 
     @Column({ default: false })
