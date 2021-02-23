@@ -1,15 +1,20 @@
 import AppError from '@shared/errors/AppError';
 
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeAppointmentRepository from '../repositories/fakes/FakeAppointmentsRepository';
 import CreateAppointmentService from './CreateAppointmentService';
 
 let fakeAppointmentsRepository: FakeAppointmentRepository;
 let createAppointment: CreateAppointmentService;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 describe('CreateAppointment', () => {
     beforeEach(() => {
         fakeAppointmentsRepository = new FakeAppointmentRepository();
+        fakeNotificationsRepository = new FakeNotificationsRepository();
+
         createAppointment = new CreateAppointmentService(
             fakeAppointmentsRepository,
+            fakeNotificationsRepository,
         );
     });
 
@@ -68,7 +73,7 @@ describe('CreateAppointment', () => {
         await expect(
             createAppointment.execute({
                 date: new Date(2021, 4, 10, 13),
-                provider_id: 'provider-id',
+                provider_id: 'user-id',
                 user_id: 'user-id',
             }),
         ).rejects.toBeInstanceOf(AppError);
