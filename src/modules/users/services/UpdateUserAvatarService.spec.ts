@@ -21,8 +21,8 @@ describe('UpdateUserAvatar', () => {
 
     it('should be able to create a new user', async () => {
         const user = await fakeUsersRepository.create({
-            name: 'Jhon Doe',
-            email: 'jhon@oulook.com',
+            name: 'John Doe',
+            email: 'johndoe@example.com',
             password: '123456',
         });
 
@@ -34,7 +34,7 @@ describe('UpdateUserAvatar', () => {
         expect(user.avatar).toBe('avatar.jpg');
     });
 
-    it('should be able to create a new user', async () => {
+    it('should not be able update avatar from non existing user', async () => {
         await expect(
             updateUserAvatar.execute({
                 user_id: 'non-existing-user',
@@ -47,8 +47,8 @@ describe('UpdateUserAvatar', () => {
         const deleteFile = jest.spyOn(fakeStorageProvider, 'deleteFile');
 
         const user = await fakeUsersRepository.create({
-            name: 'Jhon Doe',
-            email: 'jhon@oulook.com',
+            name: 'John Doe',
+            email: 'johndoe@example.com',
             password: '123456',
         });
 
@@ -56,8 +56,6 @@ describe('UpdateUserAvatar', () => {
             user_id: user.id,
             avatarFilename: 'avatar.jpg',
         });
-
-        // spy
 
         await updateUserAvatar.execute({
             user_id: user.id,
